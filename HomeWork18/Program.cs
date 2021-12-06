@@ -13,12 +13,22 @@ namespace HomeWork18
         //(при этом скобка с вершины стека снимается); в конце прохода стек должен быть пуст.
         static void Main(string[] args)
         {
-            string str = "([}{})[]"; //"Программирование — это (как [бить] {себя} по лицу,) рано[] или поздно ваш нос будет кровоточить.";
-            Stack<char> myStack = new Stack<char>();
-            bool accuracyCount = false;
-            for (int i = 0; i < str.Length; i++)
+            string str = "}([])"; //"Программирование — это (как [бить] {себя} по лицу,) рано[] или поздно ваш нос будет кровоточить.";
+            bool accuracy = AccuracyBrackets(str);
+            Console.WriteLine(accuracy);
+            Console.ReadKey();
+        }
+        public static bool AccuracyBrackets(string str)
+        {
+            char[] charArray = str.ToCharArray(); 
+            Stack<char> myStack = new Stack<char>();            
+            for (int i = 0; i < charArray.Length; i++)
             {
-                switch (str[i])
+                if ((charArray[i] == '}' || charArray[i] == ']' || charArray[i] == ')') && myStack.Count() == 0)
+                {
+                    return false;
+                }
+                switch (charArray[i])
                 {
                     case '{':
                         myStack.Push('}');
@@ -30,26 +40,19 @@ namespace HomeWork18
                         myStack.Push(')');
                         break;
                 }
-                if (myStack.Count() != 0 && str[i] == myStack.Peek())
+                if (myStack.Count() != 0 && charArray[i] == myStack.Peek())
                 {
                     myStack.Pop();
-                    accuracyCount = false;
-                }
-                else if (myStack.Count() == 0 && (str[i] == '}' || str[i] == ']' || str[i] == ')'))
-                {
-                    accuracyCount = false;
                 }
             }
-            if (myStack.Count() != 0)
+            if (myStack.Count() == 0)
             {
-                accuracyCount = false;
+                return true;
             }
-            foreach (char item in myStack)
+            else 
             {
-                Console.WriteLine(item);
+                return false;
             }
-            Console.WriteLine(accuracyCount);
-            Console.ReadKey();
         }
     }
 }
