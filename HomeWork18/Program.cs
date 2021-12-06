@@ -13,22 +13,18 @@ namespace HomeWork18
         //(при этом скобка с вершины стека снимается); в конце прохода стек должен быть пуст.
         static void Main(string[] args)
         {
-            string str = "}([])"; //"Программирование — это (как [бить] {себя} по лицу,) рано[] или поздно ваш нос будет кровоточить.";
+            Console.WriteLine("Введите строку включающую в себя скобки {}, [], () для проверки правильности их расстановки");
+            string str = Console.ReadLine();
             bool accuracy = AccuracyBrackets(str);
-            Console.WriteLine(accuracy);
+            Console.WriteLine("Скобки во введенной строке расставлены {0}", accuracy? "правильно":"неправильно");
             Console.ReadKey();
         }
         public static bool AccuracyBrackets(string str)
-        {
-            char[] charArray = str.ToCharArray(); 
-            Stack<char> myStack = new Stack<char>();            
-            for (int i = 0; i < charArray.Length; i++)
+        {            
+            Stack<char> myStack = new Stack<char>();
+            for (int i = 0; i < str.Length; i++)        //для каждой открывающей скобки в строке в стек помещается соответствующая закрывающая
             {
-                if ((charArray[i] == '}' || charArray[i] == ']' || charArray[i] == ')') && myStack.Count() == 0)
-                {
-                    return false;
-                }
-                switch (charArray[i])
+                switch (str[i])
                 {
                     case '{':
                         myStack.Push('}');
@@ -40,16 +36,20 @@ namespace HomeWork18
                         myStack.Push(')');
                         break;
                 }
-                if (myStack.Count() != 0 && charArray[i] == myStack.Peek())
+                if (myStack.Count() > 0 && str[i] == myStack.Peek())        //при соответствии скобке в строке скобки помещенный в стек, скобка извлекается из стека                                                                           
                 {
                     myStack.Pop();
                 }
-            }
-            if (myStack.Count() == 0)
+                else if ((myStack.Count() == 0 || myStack.Peek() != str[i]) && (str[i] == '}' || str[i] == ']' || str[i] == ')'))       //если закрывающая скобка в тексте не соответствует помещенной или стек пуст метод возвращает false
+                {
+                    return false;
+                }
+            }            
+            if (myStack.Count() == 0)       //если стек пуст метод возвращает true
             {
                 return true;
             }
-            else 
+            else        //если в стеке присутствуют элементы метод возвращает false;
             {
                 return false;
             }
